@@ -12,7 +12,6 @@ import (
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Habbit, error) {
-
 	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
 }
 
@@ -21,7 +20,7 @@ func (r *queryResolver) Habits(ctx context.Context) ([]*model.Habbit, error) {
 	return []*model.Habbit{
 		{
 			ID:         "123",
-			Name:       "popop",
+			Name:       "hwehhe",
 			Positive:   true,
 			CreatedAt:  "today",
 			User:       nil,
@@ -32,11 +31,15 @@ func (r *queryResolver) Habits(ctx context.Context) ([]*model.Habbit, error) {
 	}, nil
 }
 
+// Habbit returns HabbitResolver implementation.
+func (r *Resolver) Habbit() HabbitResolver { return &habbitResolver{r} }
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+type habbitResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
