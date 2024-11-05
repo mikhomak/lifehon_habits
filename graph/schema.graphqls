@@ -1,11 +1,34 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
-
-type Todo {
+type Task {
   id: ID!
-  text: String!
+  name: String!
   done: Boolean!
+  createdAt: String!
+  finishedAt: String
+  user: User!
+  categories: [Category!]
+  tags: [Tag!]
+}
+
+type Habbit {
+  id: ID!
+  name: String!
+  positive: Boolean!
+  createdAt: String!
+  user: User!
+  counter: Int!
+  categories: [Category!]
+  tags: [Tag!]
+}
+
+type Category {
+  name: String!
+  createdAt: String!
+  user: User!
+}
+
+type Tag {
+  name: String!
+  createdAt: String!
   user: User!
 }
 
@@ -15,7 +38,7 @@ type User {
 }
 
 type Query {
-  todos: [Todo!]!
+  habits: [Habbit!]!
 }
 
 input NewTodo {
@@ -24,5 +47,5 @@ input NewTodo {
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  createTodo(input: NewTodo!): Habbit!
 }

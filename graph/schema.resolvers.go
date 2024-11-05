@@ -11,13 +11,25 @@ import (
 )
 
 // CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
+func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Habbit, error) {
+
 	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+// Habits is the resolver for the habits field.
+func (r *queryResolver) Habits(ctx context.Context) ([]*model.Habbit, error) {
+	return []*model.Habbit{
+		{
+			ID:         "123",
+			Name:       "popop",
+			Positive:   true,
+			CreatedAt:  "today",
+			User:       nil,
+			Counter:    0,
+			Categories: nil,
+			Tags:       nil,
+		},
+	}, nil
 }
 
 // Mutation returns MutationResolver implementation.

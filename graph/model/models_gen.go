@@ -2,6 +2,23 @@
 
 package model
 
+type Category struct {
+	Name      string `json:"name"`
+	CreatedAt string `json:"createdAt"`
+	User      *User  `json:"user"`
+}
+
+type Habbit struct {
+	ID         string      `json:"id"`
+	Name       string      `json:"name"`
+	Positive   bool        `json:"positive"`
+	CreatedAt  string      `json:"createdAt"`
+	User       *User       `json:"user"`
+	Counter    int         `json:"counter"`
+	Categories []*Category `json:"categories,omitempty"`
+	Tags       []*Tag      `json:"tags,omitempty"`
+}
+
 type Mutation struct {
 }
 
@@ -13,11 +30,21 @@ type NewTodo struct {
 type Query struct {
 }
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
+type Tag struct {
+	Name      string `json:"name"`
+	CreatedAt string `json:"createdAt"`
+	User      *User  `json:"user"`
+}
+
+type Task struct {
+	ID         string      `json:"id"`
+	Name       string      `json:"name"`
+	Done       bool        `json:"done"`
+	CreatedAt  string      `json:"createdAt"`
+	FinishedAt *string     `json:"finishedAt,omitempty"`
+	User       *User       `json:"user"`
+	Categories []*Category `json:"categories,omitempty"`
+	Tags       []*Tag      `json:"tags,omitempty"`
 }
 
 type User struct {
