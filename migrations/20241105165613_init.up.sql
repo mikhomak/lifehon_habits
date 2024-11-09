@@ -8,7 +8,6 @@ create TABLE "lh_site_configuration"
 insert into lh_site_configuration
 values (1, true, true);
 
-
 create TABLE "lh_user"
 (
 	email VARCHAR(254) NOT NULL UNIQUE,
@@ -21,9 +20,9 @@ create TABLE "lh_user"
 
 create TABLE "lh_habbit"
 (
-	id SERIAL NOT NULL
+	id SERIAL NOT NULL,
 	name VARCHAR(50) NOT NULL,
-	user_name VARCHAR(50) NOT NULL REFERENCES "lh_uesr" (name),
+	user_name VARCHAR(50) NOT NULL REFERENCES "lh_user" (name),
 	createad_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	positive bool NOT NULL DEFAULT TRUE,
 	counter BIGINT NOT NULL DEFAULT 0,
@@ -32,9 +31,9 @@ create TABLE "lh_habbit"
 
 create TABLE "lh_task"
 (
-	id SERIAL NOT NULL
+	id SERIAL NOT NULL,
 	name VARCHAR(50) NOT NULL,
-	user_name VARCHAR(50) NOT NULL REFERENCES "lh_uesr" (name),
+	user_name VARCHAR(50) NOT NULL REFERENCES "lh_user" (name),
 	finished bool NOT NULL DEFAULT false,
 	createad_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	finished_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
