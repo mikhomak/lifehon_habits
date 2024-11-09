@@ -6,13 +6,30 @@ import (
 	"net/http"
 	"os"
 
+	_ "github.com/lib/pq"
+	"github.com/jmoiron/sqlx"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/joho/godotenv"
 )
 
 const defaultPort = "8080"
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		panic("Cannot load .env")
+	}
+
+	
+	dsn := os.Getenv("DATABASE_URL")
+	_, db_err := sqlx.Connect("postgres", dsn)
+	if db_err != nil {
+		panic("Cannot connect to database")
+	}
+
+
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort

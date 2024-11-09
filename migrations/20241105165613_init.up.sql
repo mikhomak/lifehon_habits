@@ -2,11 +2,12 @@ create TABLE "lh_site_configuration"
 (
 	id SERIAL PRIMARY KEY,
 	active BOOL NOT NULL default true,
-	allow_exp BOOL NOT NULL default true
+	allow_exp BOOL NOT NULL default true,
+	lifehon_api_key VARCHAR(254) NOT NULL
 );
 
 insert into lh_site_configuration
-values (1, true, true);
+values (1, true, true, 'api_key');
 
 create TABLE "lh_user"
 (
