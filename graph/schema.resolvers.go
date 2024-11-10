@@ -10,6 +10,7 @@ import (
 	"lifehon_habits/graph/model"
 )
 
+
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Habbit, error) {
 	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
@@ -30,6 +31,8 @@ func (r *queryResolver) Habits(ctx context.Context) ([]*model.Habbit, error) {
 		},
 	}, nil
 }
+
+
 
 // Habbit returns HabbitResolver implementation.
 func (r *Resolver) Habbit() HabbitResolver { return &habbitResolver{r} }

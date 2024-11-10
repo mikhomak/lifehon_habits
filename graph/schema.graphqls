@@ -39,6 +39,7 @@ type User {
 
 type Query {
   habits: [Habbit!]!
+  user(user_name: String!): User
 }
 
 input NewTodo {

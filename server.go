@@ -23,7 +23,7 @@ func main() {
 
 	
 	dsn := os.Getenv("DATABASE_URL")
-	_, db_err := sqlx.Connect("postgres", dsn)
+	db, db_err := sqlx.Connect("postgres", dsn)
 	if db_err != nil {
 		panic("Cannot connect to database")
 	}
@@ -35,7 +35,7 @@ func main() {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{DB: db}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
