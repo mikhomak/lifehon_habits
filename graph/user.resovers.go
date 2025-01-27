@@ -7,7 +7,7 @@ import (
 )
 
 func (r *queryResolver) User(ctx context.Context, userName string) (*model.User, error) {
-	user_psql, err := psql_models.FindUser(r.DB, userName)
+	user_psql, err := psql_models.FindUser(userName, r.DB)
 	if err != nil {
 		return nil, err
 	}

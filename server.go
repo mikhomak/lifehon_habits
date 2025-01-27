@@ -2,6 +2,7 @@ package main
 
 import (
 	"lifehon_habits/graph"
+	hapi "lifehon_habits/hapi"
 	"log"
 	"net/http"
 	"os"
@@ -15,6 +16,8 @@ import (
 
 const defaultPort = "8080"
 
+
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -25,8 +28,10 @@ func main() {
 	dsn := os.Getenv("DATABASE_URL")
 	db, db_err := sqlx.Connect("postgres", dsn)
 	if db_err != nil {
+		log.Printf("%s", db_err)
 		panic("Cannot connect to database")
 	}
+	defer db.Close()
 
 
 
@@ -35,10 +40,13 @@ func main() {
 		port = defaultPort
 	}
 
+	ctx := &hapi.Context{Db: db}
+
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{DB: db}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
+	http.HandleFunc("/user", ctx.CreateUser)
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
