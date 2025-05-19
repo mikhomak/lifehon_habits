@@ -44,6 +44,6 @@ func CreateUser(user *Create_user_psql, db *sqlx.DB) (*user_psql_model, error){
 		log.Printf("there was an error during the creation of the user. the error is [%s]", err.Error())
 		return nil, err
 	}
-	log.Printf("User [%s] has been created!", User.email)
+	log.Printf("User [%s] has been created!", &User.Email)
 	return &User, nil
 }

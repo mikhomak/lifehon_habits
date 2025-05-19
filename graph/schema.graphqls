@@ -1,3 +1,5 @@
+union BoardContent = Task | Habbit
+
 type Task {
   id: ID!
   name: String!
@@ -5,7 +7,6 @@ type Task {
   createdAt: String!
   finishedAt: String
   user: User!
-  categories: [Category!]
   tags: [Tag!]
 }
 
@@ -16,14 +17,7 @@ type Habbit {
   createdAt: String!
   user: User!
   counter: Int!
-  categories: [Category!]
   tags: [Tag!]
-}
-
-type Category {
-  name: String!
-  createdAt: String!
-  user: User!
 }
 
 type Tag {
@@ -35,6 +29,15 @@ type Tag {
 type User {
   id: ID!
   name: String!
+  board: Board!
+  habbits: [Habbit!]
+  tasks: [Task!]
+}
+
+type Board {
+  user: User!
+  columns: [Tag!]!
+  column_content(tag_name: String!): [BoardContent!]
 }
 
 type Query {
@@ -42,11 +45,12 @@ type Query {
   user(user_name: String!): User
 }
 
-input NewTodo {
+input NewTask {
   text: String!
-  userId: String!
+  tags: [String!]
+
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Habbit!
+  createTask(input: NewTask!): Task!
 }

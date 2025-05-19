@@ -2,29 +2,34 @@
 
 package model
 
-type Category struct {
-	Name      string `json:"name"`
-	CreatedAt string `json:"createdAt"`
-	User      *User  `json:"user"`
+type BoardContent interface {
+	IsBoardContent()
+}
+
+type Board struct {
+	User          *User          `json:"user"`
+	Columns       []*Tag         `json:"columns"`
+	ColumnContent []BoardContent `json:"column_content,omitempty"`
 }
 
 type Habbit struct {
-	ID         string      `json:"id"`
-	Name       string      `json:"name"`
-	Positive   bool        `json:"positive"`
-	CreatedAt  string      `json:"createdAt"`
-	User       *User       `json:"user"`
-	Counter    int         `json:"counter"`
-	Categories []*Category `json:"categories,omitempty"`
-	Tags       []*Tag      `json:"tags,omitempty"`
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Positive  bool   `json:"positive"`
+	CreatedAt string `json:"createdAt"`
+	User      *User  `json:"user"`
+	Counter   int    `json:"counter"`
+	Tags      []*Tag `json:"tags,omitempty"`
 }
+
+func (Habbit) IsBoardContent() {}
 
 type Mutation struct {
 }
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type NewTask struct {
+	Text string   `json:"text"`
+	Tags []string `json:"tags,omitempty"`
 }
 
 type Query struct {
@@ -37,17 +42,21 @@ type Tag struct {
 }
 
 type Task struct {
-	ID         string      `json:"id"`
-	Name       string      `json:"name"`
-	Done       bool        `json:"done"`
-	CreatedAt  string      `json:"createdAt"`
-	FinishedAt *string     `json:"finishedAt,omitempty"`
-	User       *User       `json:"user"`
-	Categories []*Category `json:"categories,omitempty"`
-	Tags       []*Tag      `json:"tags,omitempty"`
+	ID         string  `json:"id"`
+	Name       string  `json:"name"`
+	Done       bool    `json:"done"`
+	CreatedAt  string  `json:"createdAt"`
+	FinishedAt *string `json:"finishedAt,omitempty"`
+	User       *User   `json:"user"`
+	Tags       []*Tag  `json:"tags,omitempty"`
 }
 
+func (Task) IsBoardContent() {}
+
 type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID      string    `json:"id"`
+	Name    string    `json:"name"`
+	Board   *Board    `json:"board"`
+	Habbits []*Habbit `json:"habbits,omitempty"`
+	Tasks   []*Task   `json:"tasks,omitempty"`
 }
