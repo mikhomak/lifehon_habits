@@ -7,7 +7,7 @@ type BoardContent interface {
 }
 
 type Board struct {
-	User          *User          `json:"user"`
+	UserID        string         `json:"user_id"`
 	Columns       []*Tag         `json:"columns"`
 	ColumnContent []BoardContent `json:"column_content,omitempty"`
 }
@@ -17,7 +17,7 @@ type Habbit struct {
 	Name      string `json:"name"`
 	Positive  bool   `json:"positive"`
 	CreatedAt string `json:"createdAt"`
-	User      *User  `json:"user"`
+	UserID    string `json:"user_id"`
 	Counter   int    `json:"counter"`
 	Tags      []*Tag `json:"tags,omitempty"`
 }
@@ -38,7 +38,7 @@ type Query struct {
 type Tag struct {
 	Name      string `json:"name"`
 	CreatedAt string `json:"createdAt"`
-	User      *User  `json:"user"`
+	UserID    string `json:"user_id"`
 }
 
 type Task struct {
@@ -47,16 +47,8 @@ type Task struct {
 	Done       bool    `json:"done"`
 	CreatedAt  string  `json:"createdAt"`
 	FinishedAt *string `json:"finishedAt,omitempty"`
-	User       *User   `json:"user"`
+	UserID     string  `json:"user_id"`
 	Tags       []*Tag  `json:"tags,omitempty"`
 }
 
 func (Task) IsBoardContent() {}
-
-type User struct {
-	ID      string    `json:"id"`
-	Name    string    `json:"name"`
-	Board   *Board    `json:"board"`
-	Habbits []*Habbit `json:"habbits,omitempty"`
-	Tasks   []*Task   `json:"tasks,omitempty"`
-}

@@ -1,4 +1,10 @@
-DROP TABLE "lh_site_configuration";
-DROP TABLE "lh_habbit";
-DROP TABLE "lh_task";
-DROP TABLE "lh_user";
+DROP TABLE IF EXISTS "lh_site_configuration";
+DROP TABLE IF EXISTS "lh_board_column";
+DROP TABLE IF EXISTS "lh_board";
+DROP TABLE IF EXISTS "lh_habbit_2_tag";
+DROP TABLE IF EXISTS "lh_task_2_tag";
+DROP TABLE IF EXISTS "lh_habbit_tracker";
+DROP TABLE IF EXISTS "lh_task";
+DROP TABLE IF EXISTS "lh_user";
+DROP TABLE IF EXISTS "lh_habbit";
+DROP TABLE IF EXISTS "lh_tag";

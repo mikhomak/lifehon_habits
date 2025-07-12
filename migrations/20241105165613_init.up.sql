@@ -3,83 +3,88 @@ create TABLE "lh_site_configuration"
 	id SERIAL PRIMARY KEY,
 	active BOOL NOT NULL default true,
 	allow_exp BOOL NOT NULL default true,
-	lifehon_api_key VARCHAR(254) NOT NULL
+	lifehon_api_key VARCHAR(254) NOT NULL,
+	lifehon_url VARCHAR(254) NOT NULL,
+	lifehon_url_login_callback VARCHAR(254) NOT NULL,
+	max_habbits INTEGER NOT NULL
 );
 
 insert into lh_site_configuration
-values (1, true, true, 'api_key');
-
-create TABLE "lh_user"
-(
-	email VARCHAR(254) NOT NULL UNIQUE,
-	name VARCHAR(50) NOT NULL UNIQUE,
-	display_name VARCHAR(50) NOT NULL UNIQUE,
-	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
-	public_profile bool NOT NULL DEFAULT TRUE,
-	PRIMARY KEY (name)
-);
+values (1, true, true, 'api_key', 'http://localhost:8600/api/v1/','login/token/', 20);
 
 create TABLE "lh_habbit"
 (
-	id SERIAL NOT NULL,
+	id SERIAL,
 	name VARCHAR(50) NOT NULL,
-	user_name VARCHAR(50) NOT NULL REFERENCES "lh_user" (name),
+	user_id VARCHAR(255) NOT NULL,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	positive bool NOT NULL DEFAULT TRUE,
 	counter BIGINT NOT NULL DEFAULT 0,
-	PRIMARY KEY(id, user_name)
-);
-
-create TABLE "lh_habbit_tracker"
-(
-	task_id SERIAL NOT NULL REFERENCES "lh_task" (id),
-	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
+	PRIMARY KEY(id, user_id)
 );
 
 create TABLE "lh_task"
 (
-	id SERIAL NOT NULL,
+	id SERIAL,
 	name VARCHAR(50) NOT NULL,
-	user_name VARCHAR(50) NOT NULL REFERENCES "lh_user" (name),
+	user_id VARCHAR(255) NOT NULL,
 	finished bool NOT NULL DEFAULT false,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	finished_at TIMESTAMPTZ,
 	due_to TIMESTAMPTZ,
-	PRIMARY KEY(id, user_name)
+	PRIMARY KEY(id, user_id)
+);
+
+create TABLE "lh_habbit_tracker"
+(
+	task_id integer NOT NULL,
+	user_id VARCHAR(255) NOT NULL,
+	counter BIGINT NOT NULL,
+	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
+	foreign KEY(task_id, user_id) REFERENCES "lh_task" (id, user_id),
+	PRIMARY KEY(task_id, counter)
 );
 
 create TABLE "lh_tag"
 (
 	name VARCHAR(50) NOT NULL UNIQUE,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
-	user_created VARCHAR(50) NOT NULL REFERENCES "lh_user" (name),
+	user_id_created VARCHAR(255) NOT NULL,
 	PRIMARY KEY(name)
 );
 
 create TABLE "lh_task_2_tag"
 (
-	task_id SERIAL NOT NULL REFERENCES "lh_task" (id),
+	task_id integer NOT NULL,
+	user_id VARCHAR(255) NOT NULL,
 	tag_name VARCHAR(50) NOT NULL REFERENCES "lh_tag" (name),
 	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
+	foreign KEY(task_id, user_id) REFERENCES "lh_task" (id, user_id)
 );
 
 
-create TABLE "lh_habbit_2_tag"
+create TABLE IF NOT EXISTS"lh_habbit_2_tag"
 (
-	habbit_id SERIAL NOT NULL REFERENCES "lh_habbit" (id),
+	habbit_id integer NOT NULL,
+	user_id VARCHAR(255) NOT NULL,
 	tag_name VARCHAR(50) NOT NULL REFERENCES "lh_tag" (name),
 	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
+	foreign KEY(habbit_id, user_id) REFERENCES "lh_habbit" (id, user_id)
 );
 
 create TABLE "lh_board"
 (
-	id SERIAL NOT NULL,
+	id UUID NOT NULL DEFAULT gen_random_uuid(),
 	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
-	user VARCHAR(50) NOT NULL REFERENCES "lh_user" (name),
+	user_id VARCHAR(255) NOT NULL,
+	PRIMARY KEY(id)
 );
 
 create TABLE "lh_board_column"
 (
-	board_id SERIAL NOT NULL REFERENCES "lh_board" (id),
+	board_id UUID NOT NULL REFERENCES "lh_board" (id),
 	tag_name VARCHAR(50) NOT NULL REFERENCES "lh_tag" (name),
+	PRIMARY KEY(board_id, tag_name)
 );
+
+

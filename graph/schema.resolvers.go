@@ -20,19 +20,6 @@ func (r *queryResolver) Habits(ctx context.Context) ([]*model.Habbit, error) {
 	panic(fmt.Errorf("not implemented: Habits - habits"))
 }
 
-// User is the resolver for the user field.
-func (r *queryResolver) User(ctx context.Context, userName string) (*model.User, error) {
-	user_psql, err := psql_models.FindUser(userName, r.DB)
-	if err != nil {
-		return nil, err
-	}
-
-	return &model.User{
-		ID:   user_psql.Email,
-		Name: user_psql.Name,
-	}, nil
-}
-
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 

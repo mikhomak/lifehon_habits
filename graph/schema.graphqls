@@ -6,7 +6,7 @@ type Task {
   done: Boolean!
   createdAt: String!
   finishedAt: String
-  user: User!
+  user_id: String!
   tags: [Tag!]
 }
 
@@ -15,7 +15,7 @@ type Habbit {
   name: String!
   positive: Boolean!
   createdAt: String!
-  user: User!
+  user_id: String!
   counter: Int!
   tags: [Tag!]
 }
@@ -23,26 +23,17 @@ type Habbit {
 type Tag {
   name: String!
   createdAt: String!
-  user: User!
-}
-
-type User {
-  id: ID!
-  name: String!
-  board: Board!
-  habbits: [Habbit!]
-  tasks: [Task!]
+  user_id: String!
 }
 
 type Board {
-  user: User!
+  user_id: String!
   columns: [Tag!]!
   column_content(tag_name: String!): [BoardContent!]
 }
 
 type Query {
   habits: [Habbit!]!
-  user(user_name: String!): User
 }
 
 input NewTask {
