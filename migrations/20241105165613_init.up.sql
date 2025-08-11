@@ -5,12 +5,13 @@ create TABLE "lh_site_configuration"
 	allow_exp BOOL NOT NULL default true,
 	lifehon_api_key VARCHAR(254) NOT NULL,
 	lifehon_url VARCHAR(254) NOT NULL,
-	lifehon_url_login_callback VARCHAR(254) NOT NULL,
-	max_habbits INTEGER NOT NULL
+	lifehon_url_login VARCHAR(254) NOT NULL,
+	max_habbits INTEGER NOT NULL,
+	max_columns INTEGER NOT NULL
 );
 
 insert into lh_site_configuration
-values (1, true, true, 'api_key', 'http://localhost:8600/api/v1/','login/token/', 20);
+values (1, true, true, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InBsYW50c3MifQ.EQJZdd0SvXiVAj6vJsVr4RDq35GtXIimAuMFmCoZt9U', 'http://localhost:8600/api/v1','/user/login/token', 20, 5);
 
 create TABLE "lh_habbit"
 (

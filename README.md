@@ -1,5 +1,8 @@
-run
-`go run server.go`
+```
+npm install
+npm run dev
+```
 
-to generate models from gql graph run:
-`go run github.com/99designs/gqlgen generate`
+```
+open http://localhost:3000
+```
