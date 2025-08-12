@@ -8,6 +8,7 @@ create TABLE "lh_site_configuration"
 	lifehon_url_login VARCHAR(254) NOT NULL,
 	max_habbits INTEGER NOT NULL,
 	max_columns INTEGER NOT NULL,
+	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	PRIMARY KEY(id)
 );
 
@@ -28,6 +29,7 @@ create TABLE "lh_board_column"
 	name VARCHAR(50) NOT NULL,
 	user_id VARCHAR(255) NOT NULL,
 	position INTEGER NOT NULL UNIQUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	PRIMARY KEY(board_id, name)
 );
 
@@ -37,11 +39,11 @@ create TABLE "lh_habbit"
 	id SERIAL,
 	name VARCHAR(50) NOT NULL,
 	user_id VARCHAR(255) NOT NULL,
-	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	positive bool NOT NULL DEFAULT TRUE,
 	counter BIGINT NOT NULL DEFAULT 0,
 	board_id INTEGER NOT NULL REFERENCES "lh_board" (id),
 	column_name VARCHAR(50) NOT NULL,
+	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	foreign KEY(board_id, column_name) REFERENCES "lh_board_column" (board_id, name),
 	PRIMARY KEY(id, user_id)
 );
@@ -52,11 +54,11 @@ create TABLE "lh_task"
 	name VARCHAR(50) NOT NULL,
 	user_id VARCHAR(255) NOT NULL,
 	finished bool NOT NULL DEFAULT false,
-	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	finished_at TIMESTAMPTZ,
 	due_to TIMESTAMPTZ,
 	board_id INTEGER NOT NULL REFERENCES "lh_board" (id),
 	column_name VARCHAR(50) NOT NULL,
+	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	foreign KEY(board_id, column_name) REFERENCES "lh_board_column" (board_id, name),
 	PRIMARY KEY(id, user_id)
 );
@@ -74,8 +76,8 @@ create TABLE "lh_habbit_tracker"
 create TABLE "lh_tag"
 (
 	name VARCHAR(50) NOT NULL UNIQUE,
-	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	user_id_created VARCHAR(255) NOT NULL,
+	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	PRIMARY KEY(name)
 );
 
