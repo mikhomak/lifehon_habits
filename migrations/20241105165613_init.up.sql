@@ -6,7 +6,7 @@ create TABLE "lh_site_configuration"
 	lifehon_api_key VARCHAR(254) NOT NULL,
 	lifehon_url VARCHAR(254) NOT NULL,
 	lifehon_url_login VARCHAR(254) NOT NULL,
-	max_habbits INTEGER NOT NULL,
+	max_habits INTEGER NOT NULL,
 	max_columns INTEGER NOT NULL,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	PRIMARY KEY(id)
@@ -27,18 +27,18 @@ create TABLE "lh_board_column"
 (
 	board_id INTEGER NOT NULL REFERENCES "lh_board" (id),
 	name VARCHAR(50) NOT NULL,
-	user_id VARCHAR(255) NOT NULL,
+	user_id INTEGER NOT NULL,
 	position INTEGER NOT NULL UNIQUE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	PRIMARY KEY(board_id, name)
 );
 
 
-create TABLE "lh_habbit"
+create TABLE "lh_habit"
 (
 	id SERIAL,
 	name VARCHAR(50) NOT NULL,
-	user_id VARCHAR(255) NOT NULL,
+	user_id INTEGER NOT NULL,
 	positive bool NOT NULL DEFAULT TRUE,
 	counter BIGINT NOT NULL DEFAULT 0,
 	board_id INTEGER NOT NULL REFERENCES "lh_board" (id),
@@ -52,7 +52,7 @@ create TABLE "lh_task"
 (
 	id SERIAL,
 	name VARCHAR(50) NOT NULL,
-	user_id VARCHAR(255) NOT NULL,
+	user_id INTEGER NOT NULL,
 	finished bool NOT NULL DEFAULT false,
 	finished_at TIMESTAMPTZ,
 	due_to TIMESTAMPTZ,
@@ -63,20 +63,20 @@ create TABLE "lh_task"
 	PRIMARY KEY(id, user_id)
 );
 
-create TABLE "lh_habbit_tracker"
+create TABLE "lh_habit_tracker"
 (
-	task_id integer NOT NULL,
-	user_id VARCHAR(255) NOT NULL,
-	counter BIGINT NOT NULL,
+	task_id INTEGER NOT NULL,
+	user_id INTEGER NOT NULL,
+	counter BIGINT NOT NULL DEFAULT 0,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	foreign KEY(task_id, user_id) REFERENCES "lh_task" (id, user_id),
-	PRIMARY KEY(task_id, counter)
+	PRIMARY KEY(task_id)
 );
 
 create TABLE "lh_tag"
 (
 	name VARCHAR(50) NOT NULL UNIQUE,
-	user_id_created VARCHAR(255) NOT NULL,
+	user_id_created INTEGER NOT NULL,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	PRIMARY KEY(name)
 );
@@ -84,18 +84,18 @@ create TABLE "lh_tag"
 create TABLE "lh_task_2_tag"
 (
 	task_id integer NOT NULL,
-	user_id VARCHAR(255) NOT NULL,
+	user_id INTEGER NOT NULL,
 	tag_name VARCHAR(50) NOT NULL REFERENCES "lh_tag" (name),
 	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
 	foreign KEY(task_id, user_id) REFERENCES "lh_task" (id, user_id)
 );
 
 
-create TABLE IF NOT EXISTS "lh_habbit_2_tag"
+create TABLE IF NOT EXISTS "lh_habit_2_tag"
 (
-	habbit_id integer NOT NULL,
-	user_id VARCHAR(255) NOT NULL,
+	habit_id integer NOT NULL,
+	user_id INTEGER NOT NULL,
 	tag_name VARCHAR(50) NOT NULL REFERENCES "lh_tag" (name),
 	created_at TIMESTAMPTZ NOT NULL DEFAULT 'NOW'::timestamptz,
-	foreign KEY(habbit_id, user_id) REFERENCES "lh_habbit" (id, user_id)
+	foreign KEY(habit_id, user_id) REFERENCES "lh_habit" (id, user_id)
 );
